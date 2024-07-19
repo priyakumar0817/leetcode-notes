@@ -283,3 +283,97 @@ The total score is 50 + 15 - 9 + 4 + 42 = 102.
 }
 
 ```
+
+[1143. Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/description/)
+
+Medium  
+Given two strings text1 and text2, return the length of their longest **common subsequence**. If there is no **common subsequence**, return 0.  
+A **subsequence** of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.  
+-   For example, "ace" is a subsequence of "abcde".  
+A **common subsequence** of two strings is a subsequence that is common to both strings.  
+**Example 1:**  
+**Input:** text1 = "abcde", text2 = "ace"  
+**Output:** 3  
+**Explanation:** The longest common subsequence is "ace" and its length is 3.  
+**Example 2:**  
+**Input:** text1 = "abc", text2 = "abc"  
+**Output:** 3  
+**Explanation:** The longest common subsequence is "abc" and its length is 3.  
+**Example 3:**  
+**Input:** text1 = "abc", text2 = "def"  
+**Output:** 0  
+**Explanation:** There is no such common subsequence, so the result is 0.  
+**Constraints:**  
+-   1 <= text1.length, text2.length <= 1000  
+-   text1 and text2 consist of only lowercase English characters.  
+```BOTTOM UP: class Solution {  
+    public int longestCommonSubsequence(String text1, String text2) {  
+        // O (m \* n) O (m \* n)  
+        int n = text1.length(), m = text2.length();  
+        int\[\]\[\] dp = new int\[n + 1\]\[m + 1\];  
+        for (int i = 1; i <= n; i++) {  
+            for (int j = 1; j <= m; j++) {  
+                if (text1.charAt(i-1) == text2.charAt(j-1)) {  
+                    dp\[i\]\[j\] = 1 + dp\[i - 1\]\[j - 1\];  
+                } else {  
+                    dp\[i\]\[j\] = Math.max(dp\[i - 1\]\[j\], dp\[i\]\[j-1\]);  
+                }  
+            }  
+        }  
+        return curr;  
+    }  
+}  
+class Solution {  
+    public int longestCommonSubsequence(String text1, String text2) {  
+        int n = text1.length(), m = text2.length();  
+        int\[\]\[\] memo = new int\[n\]\[m\];  
+        return rec(n - 1, m - 1, text1, text2, memo);  
+    }  
+    private int rec(int n, int m, String text1, String text2, int\[\]\[\] memo) {  
+        if (n < 0 || m < 0)  
+            return 0;  
+        if (memo\[n\]\[m\] != 0)  
+            return memo\[n\]\[m\];  
+        if (text1.charAt(n) == text2.charAt(m)) {  
+            memo\[n\]\[m\] = 1 + rec(n - 1, m - 1, text1, text2, memo);  
+        } else {  
+            memo\[n\]\[m\] = Math.max(rec(n - 1, m, text1, text2, memo), rec(n, m - 1, text1, text2, memo));  
+        }  
+        return memo\[n\]\[m\];  
+    }  
+}  
+MY FAILED ATTEMPT (didnt realize DP needed to be used): class Solution {  
+    public int longestCommonSubsequence(String text1, String text2) {  
+        int count = 0, n = text1.length(), n2 = text2.length();  
+        if (n < n2)  
+            return helper(text2, text1);  
+        return helper(text1, text2);  
+    }  
+    private int helper(String text1, String text2) {  
+        int i = 0, j = 0, n = text1.length(), n2 = text2.length(), count = 0, start = 0, max = 0;  
+        while (i < n && j < n2) {  
+           // System.out.println(i + " " + j + " " + text1.charAt(i) + " " + text2.charAt(j));  
+            if (i < n && j < n2 && text1.charAt(i) == text2.charAt(j)) {  
+                count++;  
+                i++;  
+                j++;  
+                start = j;  
+            } else {  
+                if (j == (n2 - 1)) {  
+                    i = ++start;  
+                    j = i;  
+                } else {  
+                    i++;  
+                    if (i == n && j != n2) {  
+                        j = ++start;  
+                        i = 0;  
+                        max = Math.max(count, max);  
+                        count = 1;  
+                    }  
+                }  
+            }  
+            max = Math.max(count, max);  
+        }  
+        return max;  
+    }
+```
