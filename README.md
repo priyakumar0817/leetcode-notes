@@ -215,3 +215,71 @@ class Solution {
     }
 }
  ```
+
+[1770. Maximum Score from Performing Multiplication Operations](https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations/description/)  
+Hard  
+You are given two **0-indexed** integer arrays nums and multipliers of size n and m respectively, where n >= m.  
+You begin with a score of 0. You want to perform **exactly** m operations. On the ith operation (**0-indexed**) you will:  
+-   Choose one integer x from **either the start or the end** of the array nums.  
+-   Add multipliers\[i\] \* x to your score.  
+-   Note that multipliers\[0\] corresponds to the first operation, multipliers\[1\] to the second operation, and so on.  
+-   Remove x from nums.  
+Return the **maximum** score after performing m operations.  
+**Example 1:**  
+**Input:** nums = \[1,2,3\], multipliers = \[3,2,1\]  
+**Output:** 14  
+**Explanation:** An optimal solution is as follows:  
+\- Choose from the end, \[1,2,**3**\], adding 3 \* 3 = 9 to the score.  
+\- Choose from the end, \[1,**2**\], adding 2 \* 2 = 4 to the score.  
+\- Choose from the end, \[**1**\], adding 1 \* 1 = 1 to the score.  
+The total score is 9 + 4 + 1 = 14.  
+**Example 2:**  
+**Input:** nums = \[-5,-3,-3,-2,7,1\], multipliers = \[-10,-5,3,4,6\]  
+**Output:** 102  
+**Explanation:** An optimal solution is as follows:  
+\- Choose from the start, \[**\-5**,-3,-3,-2,7,1\], adding -5 \* -10 = 50 to the score.  
+\- Choose from the start, \[**\-3**,-3,-2,7,1\], adding -3 \* -5 = 15 to the score.  
+\- Choose from the start, \[**\-3**,-2,7,1\], adding -3 \* 3 = -9 to the score.  
+\- Choose from the end, \[-2,7,**1**\], adding 1 \* 4 = 4 to the score.  
+\- Choose from the end, \[-2,**7**\], adding 7 \* 6 = 42 to the score.  
+The total score is 50 + 15 - 9 + 4 + 42 = 102.  
+**Constraints:**  
+-   n == nums.length  
+-   m == multipliers.length  
+-   1 <= m <= 300  
+-   m <= n <= 105  
+-   \-1000 <= nums\[i\], multipliers\[i\] <= 1000
+ ```
+ TOP DOWN: class Solution {
+    public int maximumScore(int[] nums, int[] multipliers) {
+        int m = multipliers.length;
+        int[][] memo = new int[m][m];
+        return rec(0, 0, nums, multipliers, memo);
+    }
+    private int rec(int i, int l, int[] nums, int[] mul, int[][] memo) {
+        if (i == mul.length) return 0;
+        if (memo[l][i] != 0) return memo[l][i];
+        int right = nums.length - (i - l) - 1;
+        memo[l][i] = Math.max(mul[i] * nums[l] + rec(i + 1, l + 1, nums, mul, memo), mul[i] * nums[right] + rec(i + 1, l, nums, mul, memo));
+        return memo[l][i];
+    }
+ }
+ BOTTOM UP: class Solution {
+    public int maximumScore(int[] nums, int[] multipliers) {
+        int m = multipliers.length, n = nums.length;
+        int[][] dp = new int[m + 1][m + 1];
+        int left = 0, right = 0;
+        for (int i = 0; i <= m; i++) {
+            for (left = 0; left < i; left++) {
+                right = n - (i - left) - 1;
+                dp[i][left] = Math.max(multipliers[i] * nums[left] + dp[i + 1][left + 1],
+                        multipliers[i] * nums[right] + dp[i + 1][left]);
+
+
+            }
+        }
+        return dp[0][0];
+    }
+}
+
+```
