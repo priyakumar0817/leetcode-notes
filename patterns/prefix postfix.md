@@ -127,7 +127,7 @@ Right sum = nums\[1\] + nums\[2\] = 1 + -1 = 0
  ```
 
 
-## [724. Find Pivot Index](https://leetcode.com/problems/find-pivot-index/description/)
+## [238. Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/description/)
 ### Medium
 Given an integer array `nums`, return _an array_ `answer` _such that_ `answer[i]` _is equal to the product of all the elements of_ `nums` _except_ `nums[i]`.  
 The product of any prefix or suffix of `nums` is **guaranteed** to fit in a **32-bit** integer.  
