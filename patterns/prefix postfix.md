@@ -221,3 +221,60 @@ numMatrix.sumRegion(1, 2, 2, 4); // return 12 (i.e sum of the blue rectangle)
 
 ## [3070. Count Submatrices with Top-Left Element and Sum Less Than k](https://leetcode.com/problems/count-submatrices-with-top-left-element-and-sum-less-than-k/description/)
 ### Medium
+You are given a **0-indexed** integer matrix `grid` and an integer `k`.  
+Return _the **number** of_  
+_submatrices_  
+ _that contain the top-left element of the_ `grid`, _and have a sum less than or equal to_ `k`.  
+Example 1:  
+![](https://assets.leetcode.com/uploads/2024/01/01/example1.png)  
+**Input:** grid = \[\[7,6,3\],\[6,6,1\]\], k = 18  
+**Output:** 4  
+**Explanation:** There are only 4 submatrices, shown in the image above, that contain the top-left element of grid, and have a sum less than or equal to 18.  
+Example 2:  
+![](https://assets.leetcode.com/uploads/2024/01/01/example21.png)  
+**Input:** grid = \[\[7,2,9\],\[1,5,0\],\[2,6,6\]\], k = 20  
+**Output:** 6  
+**Explanation:** There are only 6 submatrices, shown in the image above, that contain the top-left element of grid, and have a sum less than or equal to 20.  
+**Constraints:**  
+-   `m == grid.length`  
+-   `n == grid[i].length`  
+-   `1 <= n, m <= 1000`  
+-   `0 <= grid[i][j] <= 1000`  
+-   `1 <= k <= 109`
+
+```
+2 ways:  
+
+class Solution {
+    public int countSubmatrices(int[][] grid, int k) {
+        int r = grid.length, c = grid[0].length;
+        int[][] p = new int[r + 1][c + 1];
+        int count = 0;
+        for (int i = 1; i <= r; i++) {
+            for (int j = 1; j <= c; j++) {
+                p[i][j] = p[i - 1][j] + p[i][j - 1] - p[i-1][j-1] + grid[i-1][j-1];
+                if (p[i][j] <= k) count++;
+            }
+        }
+        return count;
+    }
+}
+
+class Solution {
+    public int countSubmatrices(int[][] grid, int k) {
+        int r = grid.length, c = grid[0].length;
+        int[] p = new int[c + 1];
+        int count = 0, sum = 0;
+        for (int i = 0; i < r; i++) {
+            sum = 0;
+            for (int j = 0; j < c; j++) {
+                sum += grid[i][j];
+                p[j] += sum;
+                if (p[j] <= k)
+                    count++;
+            }
+        }
+        return count;
+    }
+}
+```
