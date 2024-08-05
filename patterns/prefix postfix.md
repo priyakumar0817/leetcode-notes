@@ -216,4 +216,8 @@ numMatrix.sumRegion(1, 2, 2, 4); // return 12 (i.e sum of the blue rectangle)
     public int sumRegion(int row1, int col1, int row2, int col2) {
         return prefixsum[row2 + 1][col2 + 1] - prefixsum[row1][col2 + 1] - prefixsum[row2 + 1][col1] + prefixsum[row1][col1];
     }
-}```
+}
+```
+
+## [3070. Count Submatrices with Top-Left Element and Sum Less Than k](https://leetcode.com/problems/count-submatrices-with-top-left-element-and-sum-less-than-k/description/)
+### Medium
